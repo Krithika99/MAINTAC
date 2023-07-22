@@ -7,4 +7,6 @@ interface DatabaseHelper {
     suspend fun insertRentDetails(rent: Rent)
 
     suspend fun getRentDetails(): List<Rent>
+
+    suspend fun getRentDetailsByYear(year: String): List<Rent>
 }

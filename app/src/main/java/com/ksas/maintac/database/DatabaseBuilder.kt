@@ -16,6 +16,8 @@ object DatabaseBuilder {
     }
 
     private fun buildRoomDb(context: Context): RentDatabase? {
-        return Room.databaseBuilder(context, RentDatabase::class.java, "Rent").build()
+        return Room.databaseBuilder(context, RentDatabase::class.java, "Rent")
+            .addMigrations(MIGRATION_1_2)
+            .build()
     }
 }

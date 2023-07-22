@@ -9,10 +9,9 @@ import java.time.Year
 
 @Entity(tableName = "Rent")
 data class Rent(
-    @PrimaryKey @ColumnInfo(name = "rentId") val rentId: Int,
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "rentId") val rentId: Int,
     @Embedded val owner: Owner,
-    @ColumnInfo(name = "year") val year: String,
-    @ColumnInfo(name = "month") val month: String,
+    @ColumnInfo(name = "year") val year: Year,
+    @ColumnInfo(name = "month") val month: Month,
     @Embedded val amount: Amount
-
 )

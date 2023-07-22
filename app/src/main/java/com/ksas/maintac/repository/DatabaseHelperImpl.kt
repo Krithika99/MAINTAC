@@ -12,5 +12,9 @@ class DatabaseHelperImpl(private val database: RentDao) : DatabaseHelper {
         return database.getRentDetails()
     }
 
+    override suspend fun getRentDetailsByYear(year: String): List<Rent> {
+        return database.getRentDetailsByYear(year)
+    }
+
 
 }

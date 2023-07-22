@@ -15,4 +15,7 @@ interface RentDao {
     @Query("Select * from Rent")
     suspend fun getRentDetails(): List<Rent>
 
+    @Query("Select * from Rent where year == :year")
+    suspend fun getRentDetailsByYear(year: String): List<Rent>
+
 }

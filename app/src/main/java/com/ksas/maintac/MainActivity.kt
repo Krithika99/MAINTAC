@@ -24,6 +24,8 @@ import com.ksas.maintac.model.Rent
 import com.ksas.maintac.repository.DatabaseHelperImpl
 import com.ksas.maintac.ui.theme.MAINTACTheme
 import com.ksas.maintac.viewmodel.RentViewModel
+import java.time.Month
+import java.time.Year
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,19 +51,20 @@ fun Home() {
     val databaseHelperImpl = DatabaseHelperImpl(database = database.rentDao())
     viewModel.setDataBasHelper(databaseHelperImpl)
     viewModel.getRentDetails()
-    val owner = Owner("100", "Ganesh", "Guru")
+    val owner = Owner("105", "Ganesh", "Guru")
     val amount = Amount(1000.00, 0.00)
-    val rent = Rent(1, owner, "2023", "April", amount)
-    val rent2 = Rent(3, Owner("102", "Pavani", "Jia"), "2023", "June", Amount(1200.00, 0.00))
-    viewModel.insertRentDetails(rent2)
+    val rent = Rent(4, owner, Year.of(2023), Month.of(4), amount)
+    val rent2 =
+        Rent(3, Owner("102", "Pavani", "Jia"), Year.of(2023), Month.of(6), Amount(1200.00, 0.00))
+    viewModel.insertRentDetails(rent)
 
     val rentList by viewModel.rent.asFlow().collectAsState(initial = emptyList())
 
     LazyColumn {
         items(rentList) {
             Text(text = it.rentId.toString())
-            Text(text = it.month)
-            Text(text = it.year)
+            Text(text = it.month.name)
+            Text(text = it.year.value.toString())
             Text(text = it.owner.ownerName)
             Text(text = it.amount.cash.toString())
 
