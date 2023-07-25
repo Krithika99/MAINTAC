@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "446247836019",
+    "project_id": "maintac-b58f7",
+    "storage_bucket": "maintac-b58f7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:446247836019:android:edd3490b403a58620c8d06",
+        "android_client_info": {
+          "package_name": "com.ksas.maintac"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "446247836019-shak7j693seut236oiae2hlitmk0uo3k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ksas.maintac",
+            "certificate_hash": "c0875648d465bdb68ddd7cfeba38bc5b2041ba37"
+          }
+        },
+        {
+          "client_id": "446247836019-f4f9s9hr7kmkk4q8jc5s08fgmrriavci.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQhY-6sn7hVMwZD1QIjvy5b7qcBChULc8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "446247836019-bjfl3usjasdme477gro2kr5b507i7tm4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

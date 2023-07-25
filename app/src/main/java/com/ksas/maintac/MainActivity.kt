@@ -32,6 +32,7 @@ import com.ksas.maintac.model.Amount
 import com.ksas.maintac.model.Owner
 import com.ksas.maintac.model.Rent
 import com.ksas.maintac.repository.DatabaseHelperImpl
+import com.ksas.maintac.screens.SignUpScreen
 import com.ksas.maintac.ui.theme.MAINTACTheme
 import com.ksas.maintac.utils.Utils
 import com.ksas.maintac.viewmodel.RentViewModel
@@ -50,7 +51,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    AppNavigator()
+                    //AppNavigator()
+                    SignUpScreen()
                 }
             }
         }
