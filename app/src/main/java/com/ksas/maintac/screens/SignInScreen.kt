@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.google.firebase.auth.FirebaseAuth
+import com.ksas.maintac.home_route
 import com.ksas.maintac.signin_route
 import com.ksas.maintac.signup_route
 import com.ksas.maintac.utils.Utils
@@ -28,10 +29,10 @@ import com.ksas.maintac.viewmodel.FirebaseAuthenticationViewModel
 import kotlinx.coroutines.launch
 
 @Composable
-fun SignUpScreen(
+fun SignInScreen(
     navController: NavHostController,
     firebaseViewModel: FirebaseAuthenticationViewModel,
-    onPasswordMismatch: (String, String) -> Unit
+    onLoginError: (String, String) -> Unit
 ) {
     val scope = rememberCoroutineScope()
     Column(modifier = Modifier.fillMaxSize()) {
@@ -42,7 +43,7 @@ fun SignUpScreen(
                 .background(color = Color(0XFFFACD38))
         ) {
             Text(
-                "Welcome,\nSign up here",
+                "Welcome,\nSign in here",
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(start = 20.dp, top = 50.dp),
@@ -63,51 +64,32 @@ fun SignUpScreen(
                 mutableStateOf("")
             }
 
-            var confirmPassword by remember {
-                mutableStateOf("")
-            }
-
             OutlinedTextField(
                 value = email,
                 onValueChange = { email = it },
-                label = { Text(text = Utils.email, fontFamily = Utils.customFont) },
+                label = { Text(text = "Email", fontFamily = Utils.customFont) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(10.dp),
                 leadingIcon = {
                     Icon(Icons.Default.Email, contentDescription = "")
-                },
-                colors = TextFieldDefaults.textFieldColors(focusedIndicatorColor = Color.Black)
+                }
             )
             Spacer(modifier = Modifier.height(10.dp))
 
             OutlinedTextField(
                 value = password,
                 onValueChange = { password = it },
-                label = { Text(text = Utils.password, fontFamily = Utils.customFont) },
+                label = { Text(text = "Password", fontFamily = Utils.customFont) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(10.dp),
+                visualTransformation = PasswordVisualTransformation(),
                 leadingIcon = {
                     Icon(Icons.Default.Lock, contentDescription = "")
-                },
-                visualTransformation = PasswordVisualTransformation(),
-                colors = TextFieldDefaults.textFieldColors(focusedIndicatorColor = Color.Black)
+                }
             )
-            Spacer(modifier = Modifier.height(10.dp))
-            OutlinedTextField(
-                value = confirmPassword,
-                onValueChange = { confirmPassword = it },
-                label = { Text(text = Utils.confirmPassword, fontFamily = Utils.customFont) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp),
-                leadingIcon = {
-                    Icon(Icons.Default.Lock, contentDescription = "")
-                },
-                visualTransformation = PasswordVisualTransformation(),
-                colors = TextFieldDefaults.textFieldColors(focusedIndicatorColor = Color.Black)
-            )
+
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -116,26 +98,20 @@ fun SignUpScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Button(
-                    onClick = {
-                        if (email.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty()) {
-                            if (password == confirmPassword) {
-                                scope.launch {
-                                    if (firebaseViewModel.signUp(email, password)) {
-                                        navController.navigate(signin_route) {
-                                            launchSingleTop = true
-                                            popUpTo(signup_route) {
-                                                inclusive = true
-                                            }
+                    onClick =
+                    {
+                        if (email.isNotEmpty() && password.isNotEmpty()) {
+                            scope.launch {
+                                if (firebaseViewModel.signIn(email, password)) {
+                                    navController.navigate(home_route) {
+                                        popUpTo(signin_route) {
+                                            inclusive = true
                                         }
-                                    } else {
-                                        onPasswordMismatch(Utils.somethingWentWrong, Utils.signup)
                                     }
+                                } else {
+                                    onLoginError(Utils.somethingWentWrong, Utils.signin)
                                 }
-
-                            } else {
-                                onPasswordMismatch(Utils.passwordMismatch, Utils.signup)
                             }
-
                         }
 
                     }, modifier = Modifier
@@ -145,7 +121,7 @@ fun SignUpScreen(
 
                 ) {
                     Text(
-                        text = "Sign Up",
+                        text = "Sign In",
                         color = MaterialTheme.colors.onSurface,
                         fontFamily = Utils.customFont,
                         fontSize = 18.sp
@@ -153,21 +129,21 @@ fun SignUpScreen(
                 }
                 Row {
                     Text(
-                        text = "Already signed up?",
+                        text = "Create account",
                         modifier = Modifier,
                         fontFamily = Utils.customFont,
                         fontSize = 14.sp
                     )
 
                     Text(
-                        text = "Login",
+                        text = "Sign up",
                         modifier = Modifier
                             .clickable {
-                                navController.navigate(signin_route) {
-                                    popUpTo(signin_route) {
+                                navController.navigate(signup_route) {
+                                    launchSingleTop = true
+                                    popUpTo(signup_route) {
                                         inclusive = true
                                     }
-                                    launchSingleTop = true
                                 }
                             }
                             .padding(start = 5.dp),
@@ -182,4 +158,3 @@ fun SignUpScreen(
         }
     }
 }
-

@@ -12,12 +12,15 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
@@ -27,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.asFlow
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.google.firebase.auth.FirebaseAuth
 import com.ksas.maintac.database.DatabaseBuilder
 import com.ksas.maintac.model.Amount
 import com.ksas.maintac.model.Owner
@@ -35,6 +39,7 @@ import com.ksas.maintac.repository.DatabaseHelperImpl
 import com.ksas.maintac.screens.SignUpScreen
 import com.ksas.maintac.ui.theme.MAINTACTheme
 import com.ksas.maintac.utils.Utils
+import com.ksas.maintac.viewmodel.FirebaseAuthenticationViewModel
 import com.ksas.maintac.viewmodel.RentViewModel
 import java.text.SimpleDateFormat
 import java.time.Month
@@ -51,8 +56,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    //AppNavigator()
-                    SignUpScreen()
+                    AppNavigator()
                 }
             }
         }
@@ -89,7 +93,26 @@ fun Home() {
 
 @Composable
 fun HomeScreen(navController: NavHostController) {
+    val viewModel: FirebaseAuthenticationViewModel = viewModel()
     Column(modifier = Modifier.fillMaxSize()) {
+        Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
+            Icon(
+                painter = painterResource(id = R.drawable.exit),
+                contentDescription = "",
+                modifier = Modifier
+                    .clickable {
+                        viewModel.signOut()
+                        navController.navigate(signin_route) {
+                            launchSingleTop = true
+                            popUpTo(home_route) {
+                                inclusive = true
+                            }
+                        }
+                    }
+                    .size(30.dp)
+                    .padding(end = 10.dp)
+            )
+        }
         Column(
             modifier = Modifier
                 .fillMaxWidth()
