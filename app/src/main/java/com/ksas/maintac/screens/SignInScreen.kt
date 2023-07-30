@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.google.firebase.auth.FirebaseAuth
 import com.ksas.maintac.home_route
+import com.ksas.maintac.response.Response
 import com.ksas.maintac.signin_route
 import com.ksas.maintac.signup_route
 import com.ksas.maintac.utils.Utils
@@ -102,15 +103,33 @@ fun SignInScreen(
                     {
                         if (email.isNotEmpty() && password.isNotEmpty()) {
                             scope.launch {
-                                if (firebaseViewModel.signIn(email, password)) {
-                                    navController.navigate(home_route) {
-                                        popUpTo(signin_route) {
-                                            inclusive = true
+                                firebaseViewModel.signInUser(email, password).collect {
+                                    when (it) {
+                                        is Response.Success -> {
+                                            navController.navigate(home_route) {
+                                                popUpTo(navController.graph.id) {
+                                                    inclusive = true
+                                                }
+                                            }
+                                        }
+                                        is Response.Failure -> onLoginError(
+                                            Utils.somethingWentWrong,
+                                            Utils.signin
+                                        )
+                                        is Response.Loading -> {
+
                                         }
                                     }
-                                } else {
-                                    onLoginError(Utils.somethingWentWrong, Utils.signin)
                                 }
+//                                if (firebaseViewModel.signIn(email, password)) {
+//                                    navController.navigate(home_route) {
+//                                        popUpTo(signin_route) {
+//                                            inclusive = true
+//                                        }
+//                                    }
+//                                } else {
+//                                    onLoginError(Utils.somethingWentWrong, Utils.signin)
+//                                }
                             }
                         }
 

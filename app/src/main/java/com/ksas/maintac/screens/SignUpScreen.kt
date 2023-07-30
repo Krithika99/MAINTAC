@@ -1,6 +1,5 @@
 package com.ksas.maintac.screens
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -20,9 +19,8 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.google.firebase.auth.FirebaseAuth
+import com.ksas.maintac.response.Response
 import com.ksas.maintac.signin_route
-import com.ksas.maintac.signup_route
 import com.ksas.maintac.utils.Utils
 import com.ksas.maintac.viewmodel.FirebaseAuthenticationViewModel
 import kotlinx.coroutines.launch
@@ -120,15 +118,26 @@ fun SignUpScreen(
                         if (email.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty()) {
                             if (password == confirmPassword) {
                                 scope.launch {
-                                    if (firebaseViewModel.signUp(email, password)) {
-                                        navController.navigate(signin_route) {
-                                            launchSingleTop = true
-                                            popUpTo(signup_route) {
-                                                inclusive = true
+
+                                    firebaseViewModel.signUpUser(email, password).collect {
+                                        when (it) {
+                                            is Response.Success -> {
+                                                navController.navigate(signin_route) {
+                                                    popUpTo(navController.graph.id) {
+                                                        inclusive = true
+                                                    }
+                                                }
                                             }
+
+                                            is Response.Failure -> {
+                                                onPasswordMismatch(
+                                                    Utils.somethingWentWrong,
+                                                    Utils.signup
+                                                )
+                                            }
+
+                                            is Response.Loading -> {}
                                         }
-                                    } else {
-                                        onPasswordMismatch(Utils.somethingWentWrong, Utils.signup)
                                     }
                                 }
 
@@ -176,8 +185,6 @@ fun SignUpScreen(
                         fontSize = 14.sp
                     )
                 }
-
-
             }
         }
     }

@@ -93,7 +93,7 @@ fun Home() {
 
 @Composable
 fun HomeScreen(navController: NavHostController) {
-    val viewModel: FirebaseAuthenticationViewModel = viewModel()
+    val firebaeViewModel: FirebaseAuthenticationViewModel = viewModel()
     Column(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
             Icon(
@@ -101,7 +101,7 @@ fun HomeScreen(navController: NavHostController) {
                 contentDescription = "",
                 modifier = Modifier
                     .clickable {
-                        viewModel.signOut()
+                        firebaeViewModel.signOut()
                         navController.navigate(signin_route) {
                             launchSingleTop = true
                             popUpTo(home_route) {
