@@ -9,6 +9,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -54,14 +55,14 @@ fun SignUpScreen(
                 .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            var email by remember {
+            var email by rememberSaveable {
                 mutableStateOf("")
             }
-            var password by remember {
+            var password by rememberSaveable {
                 mutableStateOf("")
             }
 
-            var confirmPassword by remember {
+            var confirmPassword by rememberSaveable {
                 mutableStateOf("")
             }
 

@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
@@ -14,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -22,14 +22,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.ksas.maintac.screens.SignInScreen
-import com.ksas.maintac.screens.SignUpScreen
+import com.ksas.maintac.screens.*
 import com.ksas.maintac.utils.Utils
 import com.ksas.maintac.utils.WarningDialog
 import com.ksas.maintac.viewmodel.FirebaseAuthenticationViewModel
 
 const val home_route = "home_page"
-const val add_route = "add_page"
+const val income_route = "income_page"
+const val expense_route = "expense_page"
 const val owner_route = "owner_page"
 const val signup_route = "signup_page"
 const val signin_route = "signin_page"
@@ -95,6 +95,24 @@ fun AppNavigator() {
                 )
             }
         }
+
+        composable(income_route) {
+            IncomeScreen()
+        }
+        composable(expense_route) {
+            ExpenseScreen()
+        }
+
+        composable(owner_route) {
+            OwnerScreen { warningMsg, screenType ->
+                navController.navigate("$warning_route/${warningMsg}/${screenType}") {
+                    launchSingleTop = true
+                    popUpTo(warning_route) {
+                        inclusive = true
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -129,21 +147,42 @@ fun ScaffoldWithBottomNavigation(
             )
 
             BottomNavigationItem(
-                selected = currentRoute == add_route,
+                selected = currentRoute == income_route,
                 onClick = {
-                    navController.navigate(add_route) {
+                    navController.navigate(income_route) {
                         popUpTo(navController.graph.startDestinationId)
                         launchSingleTop = true
                     }
                 },
                 icon = {
-                    Icon(Icons.Default.Add, contentDescription = null, modifier = Modifier)
+                    Icon(
+                        painter = painterResource(id = R.drawable.money),
+                        contentDescription = "income icon"
+                    )
                 },
                 label = {
-                    Text(text = "Add", modifier = Modifier, fontFamily = Utils.customFont)
+                    Text(text = "Income", modifier = Modifier, fontFamily = Utils.customFont)
                 }
             )
 
+            BottomNavigationItem(
+                selected = currentRoute == expense_route,
+                onClick = {
+                    navController.navigate(expense_route) {
+                        popUpTo(navController.graph.startDestinationId)
+                        launchSingleTop = true
+                    }
+                },
+                icon = {
+                    Icon(
+                        painter = painterResource(id = R.drawable.income),
+                        contentDescription = "expense icon"
+                    )
+                },
+                label = {
+                    Text(text = "Expense", modifier = Modifier, fontFamily = Utils.customFont)
+                }
+            )
             BottomNavigationItem(
                 selected = currentRoute == owner_route,
                 onClick = {

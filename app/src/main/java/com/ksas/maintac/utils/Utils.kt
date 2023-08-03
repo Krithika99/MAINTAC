@@ -13,6 +13,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.navigation.NavHostController
 import com.ksas.maintac.R
+import com.ksas.maintac.owner_route
 import com.ksas.maintac.signin_route
 import com.ksas.maintac.signup_route
 import java.text.SimpleDateFormat
@@ -31,9 +32,18 @@ class Utils {
         const val warning = "Warning!"
         const val signup = "signup"
         const val signin = "signin"
+        const val ownerPage = "ownerPage"
         const val email = "Email"
         const val password = "Password"
         const val confirmPassword = "Confirm password"
+        const val electricityBill = "Bescom bill ECS"
+        const val waterBill = "BWSSB Bill ECS"
+        const val houseKeeping = "HouseKeeping"
+        const val garbageDisposal = "Garbage disposal"
+        const val phenyl = "Phenyl"
+        const val CCTV = "CCTV"
+        const val civilWork = "Civil work"
+        const val electricalWork = "Electrical work"
 
         fun generateListOfYears(startYear: Int, endYear: Int): List<Int> {
             return (startYear..endYear).toList()
@@ -66,18 +76,29 @@ fun WarningDialog(
                         onClick =
                         {
                             dialogState.value = false
-                            if (screenType == "signup") {
-                                navController.navigate(signup_route) {
-                                    launchSingleTop = true
-                                    popUpTo(signup_route) {
-                                        inclusive = true
+                            when (screenType) {
+                                "signup" -> {
+                                    navController.navigate(signup_route) {
+                                        launchSingleTop = true
+                                        popUpTo(signup_route) {
+                                            inclusive = true
+                                        }
                                     }
                                 }
-                            } else {
-                                navController.navigate(signin_route) {
-                                    launchSingleTop = true
-                                    popUpTo(signin_route) {
-                                        inclusive = true
+                                "signin" -> {
+                                    navController.navigate(signin_route) {
+                                        launchSingleTop = true
+                                        popUpTo(signin_route) {
+                                            inclusive = true
+                                        }
+                                    }
+                                }
+                                "ownerPage" -> {
+                                    navController.navigate(owner_route) {
+                                        launchSingleTop = true
+                                        popUpTo(owner_route) {
+                                            inclusive = true
+                                        }
                                     }
                                 }
                             }

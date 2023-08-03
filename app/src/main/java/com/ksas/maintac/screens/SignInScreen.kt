@@ -10,6 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -58,10 +59,10 @@ fun SignInScreen(
                 .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            var email by remember {
+            var email by rememberSaveable {
                 mutableStateOf("")
             }
-            var password by remember {
+            var password by rememberSaveable {
                 mutableStateOf("")
             }
 
@@ -74,7 +75,8 @@ fun SignInScreen(
                     .padding(10.dp),
                 leadingIcon = {
                     Icon(Icons.Default.Email, contentDescription = "")
-                }
+                },
+                colors = TextFieldDefaults.textFieldColors(focusedIndicatorColor = Color.Black)
             )
             Spacer(modifier = Modifier.height(10.dp))
 
@@ -88,7 +90,8 @@ fun SignInScreen(
                 visualTransformation = PasswordVisualTransformation(),
                 leadingIcon = {
                     Icon(Icons.Default.Lock, contentDescription = "")
-                }
+                },
+                colors = TextFieldDefaults.textFieldColors(focusedIndicatorColor = Color.Black)
             )
 
             Column(
