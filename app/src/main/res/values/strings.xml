@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">MAINTAC</string>
+    <string name="add_owner_details">Add Owner Details</string>
+    <string name="owner_details">Owner Details</string>
+    <string name="owner_name">Owner Name</string>
+    <string name="xxx">xxx</string>
+    <string name="yyy">yyy</string>
+    <string name="flat_no">Flat No</string>
+    <string name="ooo">000</string>
+    <string name="tenant_name">Tenant Name</string>
+    <string name="empty_fields">Empty fields!!</string>
+    <string name="create_update">Create/Update</string>
 </resources>

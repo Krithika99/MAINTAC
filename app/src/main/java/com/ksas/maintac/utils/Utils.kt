@@ -29,6 +29,7 @@ class Utils {
         val currentDate: String = sdf.format(Date())
         const val somethingWentWrong = "Something Went Wrong!"
         const val passwordMismatch = "Password mismatch!"
+        const val emptyFields = "Empty fields!!"
         const val warning = "Warning!"
         const val signup = "signup"
         const val signin = "signin"

@@ -10,9 +10,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.ksas.maintac.R
 import com.ksas.maintac.utils.Utils
 import com.ksas.maintac.viewmodel.AddViewModel
 
@@ -38,7 +40,7 @@ fun OwnerScreen(onError: (String, String) -> Unit) {
     ) {
 
         Text(
-            text = "Add owner details",
+            text = stringResource(id = R.string.add_owner_details),
             fontFamily = Utils.customFont,
             fontSize = 20.sp,
             color = MaterialTheme.colors.onPrimary
@@ -53,14 +55,14 @@ fun OwnerScreen(onError: (String, String) -> Unit) {
             colors = TextFieldDefaults.textFieldColors(focusedIndicatorColor = Color.Black),
             label = {
                 Text(
-                    text = "Owner name",
+                    text = stringResource(id = R.string.owner_details),
                     fontFamily = Utils.customFont,
                     color = MaterialTheme.colors.onPrimary
                 )
             },
             placeholder = {
                 Text(
-                    text = "XXX",
+                    text = stringResource(id = R.string.xxx),
                     fontFamily = Utils.customFont,
                     color = MaterialTheme.colors.onPrimary
                 )
@@ -75,14 +77,14 @@ fun OwnerScreen(onError: (String, String) -> Unit) {
             colors = TextFieldDefaults.textFieldColors(focusedIndicatorColor = Color.Black),
             label = {
                 Text(
-                    text = "Flat no",
+                    text = stringResource(id = R.string.flat_no),
                     fontFamily = Utils.customFont,
                     color = MaterialTheme.colors.onPrimary
                 )
             },
             placeholder = {
                 Text(
-                    text = "000",
+                    text = stringResource(id = R.string.ooo),
                     fontFamily = Utils.customFont,
                     color = MaterialTheme.colors.onPrimary
                 )
@@ -97,14 +99,14 @@ fun OwnerScreen(onError: (String, String) -> Unit) {
             colors = TextFieldDefaults.textFieldColors(focusedIndicatorColor = Color.Black),
             label = {
                 Text(
-                    text = "Tenant name",
+                    text = stringResource(id = R.string.tenant_name),
                     fontFamily = Utils.customFont,
                     color = MaterialTheme.colors.onPrimary
                 )
             },
             placeholder = {
                 Text(
-                    text = "YYY",
+                    text = stringResource(id = R.string.yyy),
                     fontFamily = Utils.customFont,
                     color = MaterialTheme.colors.onPrimary
                 )
@@ -115,13 +117,13 @@ fun OwnerScreen(onError: (String, String) -> Unit) {
                 if (mOwner != "" && mFlat != "" && mTenant != "") {
                     addViewModel.storeOwnerDetails(mOwner, mFlat, mTenant)
                 } else {
-                    onError("Empty fields!!", Utils.ownerPage)
+                    onError(Utils.emptyFields, Utils.ownerPage)
                 }
             },
             colors = ButtonDefaults.buttonColors(backgroundColor = Color(0XFFFACD38))
         ) {
             Text(
-                text = "Create/Update",
+                text = stringResource(id = R.string.create_update),
                 fontFamily = Utils.customFont,
                 color = MaterialTheme.colors.onPrimary
             )
@@ -132,13 +134,13 @@ fun OwnerScreen(onError: (String, String) -> Unit) {
             modifier = Modifier
         ) {
             Text(
-                text = "Owner details",
+                text = stringResource(id = R.string.owner_details),
                 fontFamily = Utils.customFont,
                 fontSize = 20.sp,
                 color = MaterialTheme.colors.onPrimary
             )
         }
-        LazyColumn {
+        LazyColumn(modifier = Modifier) {
             items(flats) { flat ->
                 Card(
                     modifier = Modifier
@@ -149,17 +151,17 @@ fun OwnerScreen(onError: (String, String) -> Unit) {
                 ) {
                     Column(modifier = Modifier.padding(20.dp)) {
                         Text(
-                            text = "Flat No:   ${flat.flatNo}",
+                            text = "${stringResource(id = R.string.flat_no)}:   ${flat.flatNo}",
                             fontFamily = Utils.customFont,
                             color = MaterialTheme.colors.onPrimary
                         )
                         Text(
-                            text = "Owner Name:   ${flat.ownerName}",
+                            text = "${stringResource(id = R.string.owner_name)}: ${flat.ownerName}",
                             fontFamily = Utils.customFont,
                             color = MaterialTheme.colors.onPrimary
                         )
                         Text(
-                            text = "Tenant:   ${flat.tenant}",
+                            text = "${stringResource(id = R.string.tenant_name)}: ${flat.tenant}",
                             fontFamily = Utils.customFont,
                             color = MaterialTheme.colors.onPrimary
                         )

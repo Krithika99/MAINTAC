@@ -4,12 +4,15 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -24,13 +27,17 @@ import java.util.*
 @Composable
 fun HomeScreen(navController: NavHostController) {
     val firebaseViewModel: FirebaseAuthenticationViewModel = viewModel()
-    Column(modifier = Modifier.fillMaxSize()) {
-        Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.End) {
-            Icon(
-                painter = painterResource(id = R.drawable.exit),
-                contentDescription = "",
-                modifier = Modifier
-                    .clickable {
+    Scaffold(modifier = Modifier.fillMaxSize(),
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(
+                        text = stringResource(id = R.string.app_name),
+                        fontFamily = Utils.customFont
+                    )
+                },
+                actions = {
+                    IconButton(onClick = {
                         firebaseViewModel.signOut()
                         navController.navigate(signin_route) {
                             launchSingleTop = true
@@ -38,21 +45,22 @@ fun HomeScreen(navController: NavHostController) {
                                 inclusive = true
                             }
                         }
+                    }) {
+                        Icon(imageVector = Icons.Default.ExitToApp, contentDescription = "Sign out")
                     }
-                    .size(30.dp)
-                    .padding(end = 10.dp)
+                }
             )
         }
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight()
-                .padding(10.dp)
+                .padding(it)
         ) {
             YearDropDown()
         }
     }
-
 }
 
 @Composable

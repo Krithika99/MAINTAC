@@ -104,11 +104,13 @@ fun AppNavigator() {
         }
 
         composable(owner_route) {
-            OwnerScreen { warningMsg, screenType ->
-                navController.navigate("$warning_route/${warningMsg}/${screenType}") {
-                    launchSingleTop = true
-                    popUpTo(warning_route) {
-                        inclusive = true
+            ScaffoldWithBottomNavigation(navController = navController) {
+                OwnerScreen { warningMsg, screenType ->
+                    navController.navigate("$warning_route/${warningMsg}/${screenType}") {
+                        launchSingleTop = true
+                        popUpTo(warning_route) {
+                            inclusive = true
+                        }
                     }
                 }
             }
@@ -139,7 +141,10 @@ fun ScaffoldWithBottomNavigation(
                     }
                 },
                 icon = {
-                    Icon(Icons.Default.Home, contentDescription = null, modifier = Modifier)
+                    Icon(
+                        painter = painterResource(id = R.drawable.home),
+                        contentDescription = "home"
+                    )
                 },
                 label = {
                     Text(text = "Home", modifier = Modifier, fontFamily = Utils.customFont)
@@ -192,7 +197,11 @@ fun ScaffoldWithBottomNavigation(
                     }
                 },
                 icon = {
-                    Icon(Icons.Default.Person, contentDescription = null, modifier = Modifier)
+                    Icon(
+                        painter = painterResource(id = R.drawable.person),
+                        contentDescription = null,
+                        modifier = Modifier
+                    )
                 },
                 label = {
                     Text(text = "Owners", modifier = Modifier, fontFamily = Utils.customFont)

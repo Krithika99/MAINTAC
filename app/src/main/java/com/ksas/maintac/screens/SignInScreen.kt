@@ -124,15 +124,6 @@ fun SignInScreen(
                                         }
                                     }
                                 }
-//                                if (firebaseViewModel.signIn(email, password)) {
-//                                    navController.navigate(home_route) {
-//                                        popUpTo(signin_route) {
-//                                            inclusive = true
-//                                        }
-//                                    }
-//                                } else {
-//                                    onLoginError(Utils.somethingWentWrong, Utils.signin)
-//                                }
                             }
                         }
 
