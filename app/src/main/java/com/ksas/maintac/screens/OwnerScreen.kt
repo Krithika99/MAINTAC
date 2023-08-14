@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ksas.maintac.R
 import com.ksas.maintac.utils.Utils
-import com.ksas.maintac.viewmodel.AddViewModel
+import com.ksas.maintac.viewmodel.OwnerViewModel
 
 @Composable
 fun OwnerScreen(onError: (String, String) -> Unit) {
@@ -29,8 +29,8 @@ fun OwnerScreen(onError: (String, String) -> Unit) {
     var mTenant by remember {
         mutableStateOf("")
     }
-    val addViewModel: AddViewModel = viewModel()
-    val flats by addViewModel.flatsLivedata.observeAsState(initial = emptyList())
+    val ownerViewModel: OwnerViewModel = viewModel()
+    val flats by ownerViewModel.flatsLivedata.observeAsState(initial = emptyList())
 
     Column(
         modifier = Modifier
@@ -115,7 +115,7 @@ fun OwnerScreen(onError: (String, String) -> Unit) {
         Button(
             onClick = {
                 if (mOwner != "" && mFlat != "" && mTenant != "") {
-                    addViewModel.storeOwnerDetails(mOwner, mFlat, mTenant)
+                    ownerViewModel.storeOwnerDetails(mOwner, mFlat, mTenant)
                 } else {
                     onError(Utils.emptyFields, Utils.ownerPage)
                 }
@@ -130,7 +130,7 @@ fun OwnerScreen(onError: (String, String) -> Unit) {
         }
         Spacer(modifier = Modifier.height(10.dp))
         OutlinedButton(
-            onClick = { addViewModel.fetchOwnerDetails() },
+            onClick = { ownerViewModel.fetchOwnerDetails() },
             modifier = Modifier
         ) {
             Text(

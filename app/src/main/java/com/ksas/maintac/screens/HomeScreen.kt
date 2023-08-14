@@ -11,6 +11,7 @@ import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -20,7 +21,9 @@ import androidx.navigation.NavHostController
 import com.ksas.maintac.R
 import com.ksas.maintac.home_route
 import com.ksas.maintac.signin_route
+import com.ksas.maintac.utils.MonthDropDown
 import com.ksas.maintac.utils.Utils
+import com.ksas.maintac.utils.YearDropDown
 import com.ksas.maintac.viewmodel.FirebaseAuthenticationViewModel
 import java.util.*
 
@@ -59,62 +62,43 @@ fun HomeScreen(navController: NavHostController) {
                 .padding(it)
         ) {
             YearDropDown()
-        }
-    }
-}
+            MonthDropDown()
 
-@Composable
-fun YearDropDown() {
-    val currentYear = Calendar.getInstance().get(Calendar.YEAR)
-    // Declaring a boolean value to store
-    // the expanded state of the Text Field
-    var mExpanded by remember { mutableStateOf(false) }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(10.dp)
+            ) {
+                Button(
+                    onClick = {
 
-    // Create a list of years
-    val years = Utils.generateListOfYears(
-        1980,
-        2050
-    )
-    // Create a string value to store the selected year
-    var mSelectedYear by remember { mutableStateOf(currentYear.toString()) }
-
-    // Up Icon when expanded and down icon when collapsed
-    val icon = if (mExpanded)
-        Icons.Filled.KeyboardArrowUp
-    else
-        Icons.Filled.KeyboardArrowDown
-
-    Column(Modifier.padding(20.dp)) {
-
-        // Create an Outlined Text Field
-        // with icon and not expanded
-        OutlinedTextField(
-            value = mSelectedYear,
-            onValueChange = { mSelectedYear = it },
-            modifier = Modifier
-                .fillMaxWidth(),
-            label = { Text("Select the year", fontFamily = Utils.customFont, fontSize = 16.sp) },
-            trailingIcon = {
-                Icon(icon, "contentDescription",
-                    Modifier.clickable { mExpanded = !mExpanded })
-            }
-        )
-
-        // Create a drop-down menu with list of cities,
-        // when clicked, set the Text Field text as the city selected
-        DropdownMenu(
-            expanded = mExpanded,
-            onDismissRequest = { mExpanded = false },
-            modifier = Modifier,
-        ) {
-            years.forEach { year ->
-                DropdownMenuItem(onClick = {
-                    mSelectedYear = year.toString()
-                    mExpanded = false
-                }) {
-                    Text(text = year.toString(), fontFamily = Utils.customFont)
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = Color(0XFFFACD38))
+                ) {
+                    Text(text = "Income", fontFamily = Utils.customFont)
                 }
+
+                Spacer(modifier = Modifier.width(10.dp))
+                Button(
+                    onClick = {
+
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                    colors = ButtonDefaults.buttonColors(backgroundColor = Color(0XFFFACD38))
+                ) {
+                    Text(text = "Expense", fontFamily = Utils.customFont)
+                }
+
             }
         }
     }
 }
+
+
+
+

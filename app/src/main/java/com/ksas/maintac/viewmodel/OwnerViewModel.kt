@@ -12,7 +12,7 @@ import com.ksas.maintac.model.Flat
 import com.ksas.maintac.model.Owner
 import kotlinx.coroutines.launch
 
-class AddViewModel : ViewModel() {
+class OwnerViewModel : ViewModel() {
     private val db = Firebase.firestore
     private val userId = FirebaseAuth.getInstance().currentUser?.uid
 

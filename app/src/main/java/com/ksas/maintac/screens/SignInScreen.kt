@@ -115,10 +115,12 @@ fun SignInScreen(
                                                 }
                                             }
                                         }
-                                        is Response.Failure -> onLoginError(
-                                            Utils.somethingWentWrong,
-                                            Utils.signin
-                                        )
+                                        is Response.Failure -> {
+                                            onLoginError(
+                                                Utils.somethingWentWrong,
+                                                Utils.signin
+                                            )
+                                        }
                                         is Response.Loading -> {
 
                                         }

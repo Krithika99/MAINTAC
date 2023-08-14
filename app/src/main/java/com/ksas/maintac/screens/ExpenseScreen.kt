@@ -15,36 +15,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ksas.maintac.model.MonthlyExpenseNames
 import com.ksas.maintac.utils.Utils
+import com.ksas.maintac.viewmodel.ExpenseViewModel
 import java.util.*
 
 @Composable
 fun ExpenseScreen() {
-    val expense1 = MonthlyExpenseNames(Utils.electricityBill)
-    val expense2 = MonthlyExpenseNames(Utils.waterBill)
-    val expense3 = MonthlyExpenseNames(Utils.houseKeeping)
-    val expense4 = MonthlyExpenseNames(Utils.garbageDisposal)
-    val expense5 = MonthlyExpenseNames(Utils.phenyl)
-    val expense6 = MonthlyExpenseNames(Utils.CCTV)
-    val expense7 = MonthlyExpenseNames(Utils.civilWork)
-    val expense8 = MonthlyExpenseNames(Utils.electricalWork)
-
+    val expenseViewmodel: ExpenseViewModel = viewModel()
     val expenseList: MutableList<MonthlyExpenseNames> = mutableListOf()
-
     expenseList.addAll(
-        listOf(
-            expense1,
-            expense2,
-            expense3,
-            expense4,
-            expense5,
-            expense6,
-            expense7,
-            expense8
-        )
+        Utils.expenseNames
     )
 
     var yearState by remember { mutableStateOf(TextFieldValue()) }
@@ -75,7 +60,7 @@ fun ExpenseScreen() {
             value = monthState,
             onValueChange = { monthState = it },
             label = { Text(text = "Please enter the month") },
-            placeholder = { Text(text = "${Calendar.getInstance().get(Calendar.MONTH)}") },
+            placeholder = { Text(text = "${Calendar.getInstance().get(Calendar.MONTH) + 1}") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             singleLine = true,
             colors = TextFieldDefaults.textFieldColors(focusedIndicatorColor = Color.Black),
@@ -102,9 +87,9 @@ fun ExpenseScreen() {
                 ) {
                     var mExpense by remember { mutableStateOf(TextFieldValue()) }
                     var mExpanded by rememberSaveable { mutableStateOf(false) }
-                    var mSelectedMode by rememberSaveable { mutableStateOf("Mode") }
+                    var mSelectedMode by rememberSaveable { mutableStateOf(Utils.mode) }
 
-                    val paymentMode = listOf("Cash", "Bank")
+                    val paymentMode = listOf(Utils.cash, Utils.bank)
 
                     Text(text = it.expense, modifier = Modifier.weight(2f))
                     TextField(
@@ -137,6 +122,8 @@ fun ExpenseScreen() {
                                 DropdownMenuItem(onClick = {
                                     mSelectedMode = paymentMode
                                     mExpanded = false
+                                    expenseViewmodel.billMap[it.expense] =
+                                        listOf(mExpense.text, mSelectedMode)
                                 }) {
                                     Text(
                                         text = paymentMode,
@@ -149,9 +136,29 @@ fun ExpenseScreen() {
                 }
             }
             item {
-                ShowSubmitButton()
+                ShowSubmitButton(expenseViewmodel, yearState.text, monthState.text)
             }
         }
+    }
+}
+
+@Composable
+fun ShowSubmitButton(expenseViewmodel: ExpenseViewModel, year: String, month: String) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(end = 10.dp, top = 10.dp),
+    ) {
+        Button(
+            onClick = {
+                expenseViewmodel.saveMonthlyBillMap(year, month)
+            },
+            modifier = Modifier.fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(backgroundColor = Color(0XFFFACD38))
+        ) {
+            Text(text = "Submit", fontFamily = Utils.customFont)
+        }
+
     }
 }
 
@@ -166,4 +173,10 @@ fun ShowMonthlyExpenseHeading() {
     ) {
         Text(text = "Monthly Expense", fontSize = 20.sp, fontFamily = Utils.customFont)
     }
+}
+
+@Preview
+@Composable
+fun ShowPreview() {
+    ExpenseScreen()
 }

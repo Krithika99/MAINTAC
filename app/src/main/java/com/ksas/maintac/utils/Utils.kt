@@ -1,18 +1,25 @@
 package com.ksas.maintac.utils
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.AlertDialog
-import androidx.compose.material.Button
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.ksas.maintac.R
+import com.ksas.maintac.model.MonthlyExpenseNames
+import com.ksas.maintac.model.MonthlyExpenses
 import com.ksas.maintac.owner_route
 import com.ksas.maintac.signin_route
 import com.ksas.maintac.signup_route
@@ -43,12 +50,28 @@ class Utils {
         const val garbageDisposal = "Garbage disposal"
         const val phenyl = "Phenyl"
         const val CCTV = "CCTV"
+        const val cash = "Cash"
+        const val bank = "Bank"
+        const val mode = "Mode"
         const val civilWork = "Civil work"
         const val electricalWork = "Electrical work"
+        const val MonthlyExpense = "Monthly Expense"
+        const val MonthlyIncome = "Monthly Income"
 
         fun generateListOfYears(startYear: Int, endYear: Int): List<Int> {
             return (startYear..endYear).toList()
         }
+
+        fun generateListOfMonths(startMonth: Int, endMonth: Int): List<Int> {
+            return (startMonth..endMonth).toList()
+        }
+
+        val expenseNames = listOf(
+            MonthlyExpenseNames(electricityBill),
+            MonthlyExpenseNames(waterBill), MonthlyExpenseNames(houseKeeping),
+            MonthlyExpenseNames(garbageDisposal), MonthlyExpenseNames(phenyl),
+            MonthlyExpenseNames(CCTV)
+        )
     }
 }
 
@@ -114,5 +137,117 @@ fun WarningDialog(
 
     if (dialogState.value) {
         dialog()
+    }
+}
+
+@Composable
+fun YearDropDown() {
+    val currentYear = Calendar.getInstance().get(Calendar.YEAR)
+    // Declaring a boolean value to store
+    // the expanded state of the Text Field
+    var mExpanded by remember { mutableStateOf(false) }
+
+    // Create a list of years
+    val years = Utils.generateListOfYears(
+        2000,
+        2050
+    )
+    // Create a string value to store the selected year
+    var mSelectedYear by remember { mutableStateOf(currentYear.toString()) }
+
+    // Up Icon when expanded and down icon when collapsed
+    val icon = if (mExpanded)
+        Icons.Filled.KeyboardArrowUp
+    else
+        Icons.Filled.KeyboardArrowDown
+
+    Column(Modifier.padding(20.dp)) {
+
+        // Create an Outlined Text Field
+        // with icon and not expanded
+        OutlinedTextField(
+            value = mSelectedYear,
+            onValueChange = { mSelectedYear = it },
+            modifier = Modifier
+                .fillMaxWidth(),
+            label = { Text("Select the year", fontFamily = Utils.customFont, fontSize = 16.sp) },
+            trailingIcon = {
+                Icon(icon, "contentDescription",
+                    Modifier.clickable { mExpanded = !mExpanded })
+            }
+        )
+
+        // Create a drop-down menu with list of cities,
+        // when clicked, set the Text Field text as the city selected
+        DropdownMenu(
+            expanded = mExpanded,
+            onDismissRequest = { mExpanded = false },
+            modifier = Modifier,
+        ) {
+            years.forEach { year ->
+                DropdownMenuItem(onClick = {
+                    mSelectedYear = year.toString()
+                    mExpanded = false
+                }) {
+                    Text(text = year.toString(), fontFamily = Utils.customFont)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun MonthDropDown() {
+    val currentMonth = Calendar.getInstance().get(Calendar.MONTH)
+    // Declaring a boolean value to store
+    // the expanded state of the Text Field
+    var mExpanded by remember { mutableStateOf(false) }
+
+    // Create a list of years
+    val months = Utils.generateListOfMonths(
+        1,
+        12
+    )
+    // Create a string value to store the selected year
+    var mSelectedMonth by remember { mutableStateOf(currentMonth.toString()) }
+
+    // Up Icon when expanded and down icon when collapsed
+    val icon = if (mExpanded)
+        Icons.Filled.KeyboardArrowUp
+    else
+        Icons.Filled.KeyboardArrowDown
+
+    Column(Modifier.padding(20.dp)) {
+
+        // Create an Outlined Text Field
+        // with icon and not expanded
+        OutlinedTextField(
+            value = mSelectedMonth,
+            onValueChange = { mSelectedMonth = it },
+            modifier = Modifier
+                .fillMaxWidth(),
+            label = { Text("Select the Month", fontFamily = Utils.customFont, fontSize = 16.sp) },
+            trailingIcon = {
+                Icon(icon, "contentDescription",
+                    Modifier.clickable { mExpanded = !mExpanded })
+            }
+        )
+
+        // Create a drop-down menu with list of cities,
+        // when clicked, set the Text Field text as the city selected
+        DropdownMenu(
+            expanded = mExpanded,
+            onDismissRequest = { mExpanded = false },
+            modifier = Modifier,
+        ) {
+            months.forEach { month ->
+                DropdownMenuItem(onClick = {
+                    mSelectedMonth = month.toString()
+                    mExpanded = false
+                }) {
+                    Text(text = month.toString(), fontFamily = Utils.customFont)
+                }
+            }
+        }
     }
 }

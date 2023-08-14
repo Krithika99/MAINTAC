@@ -54,6 +54,7 @@ class AuthRepositoryImpl : AuthRepository {
                     Log.d("repo", "current user id: ${auth.currentUser?.uid}")
                 }
             }.addOnFailureListener {
+                Log.e("Repo", it.message!!)
                 trySend(Response.Failure(it))
             }
         } catch (e: java.lang.Exception) {
