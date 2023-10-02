@@ -19,7 +19,7 @@ import com.ksas.maintac.utils.Utils
 import com.ksas.maintac.viewmodel.OwnerViewModel
 
 @Composable
-fun OwnerScreen(onError: (String, String) -> Unit) {
+fun OwnerScreen(paddingValues: PaddingValues, onError: (String, String) -> Unit) {
     var mOwner by remember {
         mutableStateOf("")
     }
@@ -35,7 +35,7 @@ fun OwnerScreen(onError: (String, String) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 10.dp),
+            .padding(top = 10.dp, bottom = paddingValues.calculateBottomPadding()),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 

@@ -8,4 +8,6 @@ import com.ksas.maintac.viewmodel.IncomeViewModel
 fun TestScreen() {
     val incomeVM: IncomeViewModel = viewModel()
     incomeVM.getMonthlyIncome("2023", 8)
+
+    incomeVM.updateFieldTest()
 }

@@ -13,6 +13,7 @@ import com.ksas.maintac.response.Response
 import com.ksas.maintac.utils.Utils
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 class IncomeViewModel() : ViewModel() {
     private val db = Firebase.firestore
@@ -46,6 +47,27 @@ class IncomeViewModel() : ViewModel() {
                     Log.e("test", "Error getting documents: ", exception)
                 }
         }
+    }
+
+    fun updateFieldTest() {
+        val documentRef = db.collection(Utils.MonthlyIncome).document("202310")
+        viewModelScope.launch {
+            val documentSnapshot = documentRef.get().await()
+
+            try {
+                val map = documentSnapshot.data
+                if (map != null) {
+                    val updatedMap = map.toMutableMap()
+                    updatedMap["Ms Krithika"] = listOf("400", "Bank")
+
+                    documentRef.set(updatedMap).await()
+                }
+            } catch (e: Exception) {
+                Log.d("updateTest", e.message!!)
+            }
+
+        }
+
     }
 
 

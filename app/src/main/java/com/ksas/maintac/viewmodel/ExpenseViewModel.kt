@@ -9,6 +9,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.ksas.maintac.model.MonthlyExpenses
+import com.ksas.maintac.response.Response
 import com.ksas.maintac.utils.Utils
 import kotlinx.coroutines.launch
 
@@ -19,6 +20,9 @@ class ExpenseViewModel : ViewModel() {
 
     private val _expense = MutableLiveData<MonthlyExpenses>()
     val expense: LiveData<MonthlyExpenses> = _expense
+
+    private val _expenseResponse = MutableLiveData<Response<String>>()
+    val expenseResponse = _expenseResponse
 
     val billMap = mutableMapOf<String, List<String>>()
 
@@ -46,9 +50,11 @@ class ExpenseViewModel : ViewModel() {
         db.collection(Utils.MonthlyExpense).document("$year$month").set(billMap)
             .addOnCompleteListener {
                 Log.d("TESTEST", "Added")
+                _expenseResponse.value = Response.Success("Added Successfully!!")
                 billMap.clear()
             }.addOnFailureListener {
                 Log.d("TEST", it.message.toString())
+                _expenseResponse.value = Response.Failure(it)
             }
     }
 }

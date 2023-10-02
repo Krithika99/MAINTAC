@@ -1,5 +1,6 @@
 package com.ksas.maintac.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -13,6 +14,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
@@ -20,12 +22,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ksas.maintac.model.MonthlyExpenseNames
+import com.ksas.maintac.response.Response
 import com.ksas.maintac.utils.Utils
 import com.ksas.maintac.viewmodel.ExpenseViewModel
 import java.util.*
 
 @Composable
-fun ExpenseScreen() {
+fun ExpenseScreen(paddingValues: PaddingValues) {
     val expenseViewmodel: ExpenseViewModel = viewModel()
     val expenseList: MutableList<MonthlyExpenseNames> = mutableListOf()
     expenseList.addAll(
@@ -40,7 +43,7 @@ fun ExpenseScreen() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 7.dp),
+            .padding(top = 7.dp, bottom = paddingValues.calculateBottomPadding()),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         OutlinedTextField(
@@ -144,6 +147,7 @@ fun ExpenseScreen() {
 
 @Composable
 fun ShowSubmitButton(expenseViewmodel: ExpenseViewModel, year: String, month: String) {
+    val context = LocalContext.current
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -152,6 +156,20 @@ fun ShowSubmitButton(expenseViewmodel: ExpenseViewModel, year: String, month: St
         Button(
             onClick = {
                 expenseViewmodel.saveMonthlyBillMap(year, month)
+                when (val expenseLivedata = expenseViewmodel.expenseResponse.value) {
+                    is Response.Success -> {
+                        Toast.makeText(context, expenseLivedata.data, Toast.LENGTH_LONG)
+                            .show()
+                    }
+
+                    is Response.Failure -> {
+                        Toast.makeText(context, expenseLivedata.toString(), Toast.LENGTH_LONG)
+                            .show()
+                    }
+
+                    else -> {}
+                }
+
             },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(backgroundColor = Color(0XFFFACD38))
@@ -178,5 +196,5 @@ fun ShowMonthlyExpenseHeading() {
 @Preview
 @Composable
 fun ShowPreview() {
-    ExpenseScreen()
+    //ExpenseScreen(it)
 }

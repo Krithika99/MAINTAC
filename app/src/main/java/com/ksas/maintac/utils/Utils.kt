@@ -109,6 +109,7 @@ fun WarningDialog(
                                         }
                                     }
                                 }
+
                                 "signin" -> {
                                     navController.navigate(signin_route) {
                                         launchSingleTop = true
@@ -117,6 +118,7 @@ fun WarningDialog(
                                         }
                                     }
                                 }
+
                                 "ownerPage" -> {
                                     navController.navigate(owner_route) {
                                         launchSingleTop = true
@@ -141,7 +143,7 @@ fun WarningDialog(
 }
 
 @Composable
-fun YearDropDown() {
+fun YearDropDown(): String {
     val currentYear = Calendar.getInstance().get(Calendar.YEAR)
     // Declaring a boolean value to store
     // the expanded state of the Text Field
@@ -194,10 +196,11 @@ fun YearDropDown() {
             }
         }
     }
+    return mSelectedYear
 }
 
 @Composable
-fun MonthDropDown() {
+fun MonthDropDown(): String {
     val currentMonth = Calendar.getInstance().get(Calendar.MONTH)
     // Declaring a boolean value to store
     // the expanded state of the Text Field
@@ -250,4 +253,5 @@ fun MonthDropDown() {
             }
         }
     }
+    return mSelectedMonth
 }

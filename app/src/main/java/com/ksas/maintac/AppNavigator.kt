@@ -5,9 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -97,15 +94,21 @@ fun AppNavigator() {
         }
 
         composable(income_route) {
-            IncomeScreen()
+            ScaffoldWithBottomNavigation(navController = navController) {
+                IncomeScreen(it)
+            }
+
         }
         composable(expense_route) {
-            ExpenseScreen()
+            ScaffoldWithBottomNavigation(navController = navController) {
+                ExpenseScreen(it)
+            }
+
         }
 
         composable(owner_route) {
             ScaffoldWithBottomNavigation(navController = navController) {
-                OwnerScreen { warningMsg, screenType ->
+                OwnerScreen(it) { warningMsg, screenType ->
                     navController.navigate("$warning_route/${warningMsg}/${screenType}") {
                         launchSingleTop = true
                         popUpTo(warning_route) {

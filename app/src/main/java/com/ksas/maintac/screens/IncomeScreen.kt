@@ -33,6 +33,7 @@ import java.util.*
 
 @Composable
 fun IncomeScreen(
+    paddingValues: PaddingValues,
     ownerViewModel: OwnerViewModel = viewModel(),
     incomeViewModel: IncomeViewModel = viewModel()
 ) {
@@ -54,7 +55,7 @@ fun IncomeScreen(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 7.dp),
+                .padding(top = 7.dp, bottom = paddingValues.calculateBottomPadding()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             OutlinedTextField(
@@ -180,6 +181,7 @@ fun ShowIncomeSubmitButton(incomeViewModel: IncomeViewModel, year: String, month
                             Toast.LENGTH_LONG
                         ).show()
                     }
+
                     is Response.Failure -> {
                         println("Failure response received")
                         Toast.makeText(
@@ -188,9 +190,11 @@ fun ShowIncomeSubmitButton(incomeViewModel: IncomeViewModel, year: String, month
                             Toast.LENGTH_LONG
                         ).show()
                     }
+
                     is Response.Loading -> {
 
                     }
+
                     else -> {
 
                     }
@@ -224,6 +228,6 @@ fun ShowIncomeHeading() {
 @Composable
 fun DefaultPreview() {
     MAINTACTheme {
-        IncomeScreen()
+        //IncomeScreen()
     }
 }
