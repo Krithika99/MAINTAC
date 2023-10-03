@@ -17,6 +17,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.google.firebase.firestore.DocumentSnapshot
 import com.ksas.maintac.R
+import com.ksas.maintac.edit_route
 import com.ksas.maintac.home_route
 import com.ksas.maintac.response.Response
 import com.ksas.maintac.signin_route
@@ -146,9 +147,9 @@ fun HomeScreen(navController: NavHostController) {
                     onClick = {
                         editFlag.value = true
                         if (flag.value) {
-                            homeViewModel.editDetails(incomeState, year, month)
+                            navController.navigate("$edit_route/$year/$month/${flag.value}")
                         } else {
-                            homeViewModel.editDetails(expenseState, year, month)
+                            navController.navigate("$edit_route/$year/$month/${flag.value}")
                         }
                     },
                     modifier = Modifier

@@ -33,6 +33,7 @@ const val signin_route = "signin_page"
 const val warning_route = "warning_page"
 const val warningMsg = "warningMsg"
 const val screenType = "screenType"
+const val edit_route = "edit_route"
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -116,6 +117,20 @@ fun AppNavigator() {
                         }
                     }
                 }
+            }
+        }
+
+        composable("$edit_route/{year}/{month}/{flag}", arguments = listOf(
+            navArgument("year") { type = NavType.StringType },
+            navArgument("month") { type = NavType.StringType }
+        )) { navBackStackEntry ->
+            ScaffoldWithBottomNavigation(navController = navController) {
+                EditIncome(
+                    year = navBackStackEntry.arguments?.getString("year") ?: "",
+                    month = navBackStackEntry.arguments?.getString("month") ?: "",
+                    flag = navBackStackEntry.arguments?.getBoolean("flag") ?: false
+                )
+
             }
         }
     }
